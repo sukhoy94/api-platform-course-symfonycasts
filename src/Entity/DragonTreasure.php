@@ -39,7 +39,7 @@ class DragonTreasure
     private ?int $coolFactor = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?\DateTimeImmutable $plunderedAt = null;
 
     #[ORM\Column]
     private ?bool $isPublished = null;
@@ -85,14 +85,14 @@ class DragonTreasure
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getPlunderedAt(): ?\DateTimeImmutable
     {
-        return $this->createdAt;
+        return $this->plunderedAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setPlunderedAt(\DateTimeImmutable $plunderedAt): static
     {
-        $this->createdAt = $createdAt;
+        $this->plunderedAt = $plunderedAt;
 
         return $this;
     }
