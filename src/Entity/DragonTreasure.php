@@ -9,7 +9,9 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\DragonTreasureRepository;
+use Carbon\Carbon;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: DragonTreasureRepository::class)]
 #[ApiResource(
@@ -20,29 +22,52 @@ use Doctrine\ORM\Mapping as ORM;
         new Post(),
         new Put(),
         new Patch(),
-    ]
+    ],
+    normalizationContext: [
+        'groups' => [
+            'treasure:read',
+        ]
+    ],
+
+    denormalizationContext: [
+        'groups' => [
+            'treasure:write',
+        ]
+    ],
+
+    paginationItemsPerPage: 5,
 )]
 class DragonTreasure
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['treasure:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['treasure:read', 'treasure:write'])]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Groups(['treasure:read', 'treasure:write'])]
     private ?int $value = null;
 
     #[ORM\Column]
+    #[Groups(['treasure:read', 'treasure:write'])]
     private ?int $coolFactor = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $plunderedAt = null;
 
     #[ORM\Column]
-    private ?bool $isPublished = null;
+    #[Groups(['treasure:read'])]
+    private ?bool $isPublished = false;
+
+    public function __construct()
+    {
+        $this->plunderedAt = new \DateTimeImmutable("now", new \DateTimeZone("GMT+02:00"));
+    }
 
     public function getId(): ?int
     {
@@ -90,11 +115,10 @@ class DragonTreasure
         return $this->plunderedAt;
     }
 
-    public function setPlunderedAt(\DateTimeImmutable $plunderedAt): static
+    #[Groups(['treasure:read'])]
+    public function getPlunderedAtAgo(): string
     {
-        $this->plunderedAt = $plunderedAt;
-
-        return $this;
+        return Carbon::instance($this->plunderedAt)->diffForHumans();
     }
 
     public function getIsPublished(): ?bool
