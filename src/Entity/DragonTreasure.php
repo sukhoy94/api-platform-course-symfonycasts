@@ -33,7 +33,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'groups' => [
             'treasure:write',
         ]
-    ]
+    ],
+
+    paginationItemsPerPage: 5,
 )]
 class DragonTreasure
 {
