@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Put;
 use App\Repository\DragonTreasureRepository;
 use Carbon\Carbon;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: DragonTreasureRepository::class)]
 #[ApiResource(
@@ -21,6 +22,17 @@ use Doctrine\ORM\Mapping as ORM;
         new Post(),
         new Put(),
         new Patch(),
+    ],
+    normalizationContext: [
+        'groups' => [
+            'treasure:read',
+        ]
+    ],
+
+    denormalizationContext: [
+        'groups' => [
+            'treasure:write',
+        ]
     ]
 )]
 class DragonTreasure
@@ -28,22 +40,27 @@ class DragonTreasure
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['treasure:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['treasure:read', 'treasure:write'])]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Groups(['treasure:read', 'treasure:write'])]
     private ?int $value = null;
 
     #[ORM\Column]
+    #[Groups(['treasure:read', 'treasure:write'])]
     private ?int $coolFactor = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $plunderedAt = null;
 
     #[ORM\Column]
-    private ?bool $isPublished = null;
+    #[Groups(['treasure:read'])]
+    private ?bool $isPublished = false;
 
     public function __construct()
     {
@@ -96,6 +113,7 @@ class DragonTreasure
         return $this->plunderedAt;
     }
 
+    #[Groups(['treasure:read'])]
     public function getPlunderedAtAgo(): string
     {
         return Carbon::instance($this->plunderedAt)->diffForHumans();
