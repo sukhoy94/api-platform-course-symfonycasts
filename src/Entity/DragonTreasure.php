@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\DragonTreasureRepository;
+use Carbon\Carbon;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DragonTreasureRepository::class)]
@@ -93,6 +94,11 @@ class DragonTreasure
     public function getPlunderedAt(): ?\DateTimeImmutable
     {
         return $this->plunderedAt;
+    }
+
+    public function getPlunderedAtAgo(): string
+    {
+        return Carbon::instance($this->plunderedAt)->diffForHumans();
     }
 
     public function getIsPublished(): ?bool
