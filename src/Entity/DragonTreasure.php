@@ -44,6 +44,11 @@ class DragonTreasure
     #[ORM\Column]
     private ?bool $isPublished = null;
 
+    public function __construct()
+    {
+        $this->plunderedAt = new \DateTimeImmutable("now", new \DateTimeZone("GMT+02:00"));
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -88,13 +93,6 @@ class DragonTreasure
     public function getPlunderedAt(): ?\DateTimeImmutable
     {
         return $this->plunderedAt;
-    }
-
-    public function setPlunderedAt(\DateTimeImmutable $plunderedAt): static
-    {
-        $this->plunderedAt = $plunderedAt;
-
-        return $this;
     }
 
     public function getIsPublished(): ?bool
