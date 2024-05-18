@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
@@ -37,6 +40,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
     paginationItemsPerPage: 5,
 )]
+#[ApiFilter(BooleanFilter::class, properties: ['isPublished',])]
 class DragonTreasure
 {
     #[ORM\Id]
@@ -47,6 +51,7 @@ class DragonTreasure
 
     #[ORM\Column(length: 255)]
     #[Groups(['treasure:read', 'treasure:write'])]
+    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $name = null;
 
     #[ORM\Column]
