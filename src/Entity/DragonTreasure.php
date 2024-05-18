@@ -31,6 +31,13 @@ use function Symfony\Component\String\u;
         new Put(),
         new Patch(),
     ],
+    formats: [
+        'json',
+        'jsonld',
+        'jsonhal',
+        'csv' => 'text/csv'
+    ],
+
     normalizationContext: [
         'groups' => [
             'treasure:read',
@@ -42,8 +49,7 @@ use function Symfony\Component\String\u;
             'treasure:write',
         ]
     ],
-
-    paginationItemsPerPage: 5,
+    paginationItemsPerPage: 5
 )]
 #[ApiFilter(BooleanFilter::class, properties: ['isPublished',])]
 #[ApiFilter(PropertyFilter::class)]
