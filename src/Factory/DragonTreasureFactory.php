@@ -51,6 +51,7 @@ final class DragonTreasureFactory extends ModelFactory
             'coolFactor' => self::faker()->randomNumber(),
             'isPublished' => self::faker()->boolean(),
             'name' => self::faker()->randomElement(self::TREASURE_NAMES),
+            'description' => self::faker()->paragraph(),
             'value' => self::faker()->randomNumber(),
         ];
     }
