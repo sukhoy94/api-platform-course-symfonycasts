@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use function Symfony\Component\String\u;
 
@@ -73,6 +74,7 @@ class DragonTreasure
     #[ORM\Column]
     #[Groups(['treasure:read', 'treasure:write'])]
     #[ApiFilter(RangeFilter::class)]
+    #[Assert\GreaterThan(0)]
     private ?int $value = null;
 
     #[ORM\Column]
