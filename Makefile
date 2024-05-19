@@ -4,3 +4,10 @@ stop:
 	symfony server:stop && docker compose down
 migrations:
 	symfony console make:migration && symfony console doctrine:migrations:migrate
+reset_db:
+	symfony console doctrine:database:drop --force
+create_db:
+	symfony console doctrine:database:create
+fixtures:
+	symfony console doctrine:fixtures:load
+
