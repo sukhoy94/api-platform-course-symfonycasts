@@ -88,6 +88,11 @@ class DragonTreasure
     #[Groups(['treasure:read'])]
     private ?bool $isPublished = false;
 
+    #[ORM\ManyToOne(inversedBy: 'dragonTreasures')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['treasure:read', 'treasure:write'])]
+    private ?User $owner = null;
+
     #p
 
     public function __construct()
@@ -173,6 +178,18 @@ class DragonTreasure
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): static
+    {
+        $this->owner = $owner;
 
         return $this;
     }
