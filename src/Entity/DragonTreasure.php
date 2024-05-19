@@ -26,7 +26,11 @@ use function Symfony\Component\String\u;
 #[ApiResource(
     shortName: 'treasure',
     operations: [
-        new Get(),
+        new Get(
+            normalizationContext: [
+                'groups' => ['treasure:read', 'treasure:item:read']
+            ]
+        ),
         new GetCollection(),
         new Post(),
         new Put(),
@@ -63,7 +67,7 @@ class DragonTreasure
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['treasure:read', 'treasure:write'])]
+    #[Groups(['treasure:read', 'treasure:write', 'user:read'])]
     #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $name = null;
 
