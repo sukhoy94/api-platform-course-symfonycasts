@@ -67,7 +67,7 @@ class DragonTreasure
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['treasure:read', 'treasure:write', 'user:read'])]
+    #[Groups(['treasure:read', 'treasure:write', 'user:read', 'user:write'])]
     #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $name = null;
 
@@ -76,13 +76,13 @@ class DragonTreasure
     #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $description = 'cool description';
     #[ORM\Column]
-    #[Groups(['treasure:read', 'treasure:write'])]
+    #[Groups(['treasure:read', 'treasure:write', 'user:write'])]
     #[ApiFilter(RangeFilter::class)]
     #[Assert\GreaterThan(0)]
     private ?int $value = null;
 
     #[ORM\Column]
-    #[Groups(['treasure:read', 'treasure:write'])]
+    #[Groups(['treasure:read', 'treasure:write', 'user:write'])]
     private ?int $coolFactor = null;
 
     #[ORM\Column]
@@ -180,6 +180,7 @@ class DragonTreasure
         return u($this->getDescription())->truncate(40, '...');
     }
 
+    #[Groups(['user:write'])]
     public function setDescription(string $description): self
     {
         $this->description = $description;
