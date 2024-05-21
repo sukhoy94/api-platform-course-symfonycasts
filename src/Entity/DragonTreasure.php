@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
@@ -24,7 +25,7 @@ use function Symfony\Component\String\u;
 
 #[ORM\Entity(repositoryClass: DragonTreasureRepository::class)]
 #[ApiResource(
-    shortName: 'treasure',
+    shortName: 'treasures',
     operations: [
         new Get(
             normalizationContext: [
@@ -55,6 +56,24 @@ use function Symfony\Component\String\u;
         ]
     ],
     paginationItemsPerPage: 5
+)]
+#[ApiResource(
+    uriTemplate: 'users/{user_id}/treasures.{_format}',
+    shortName: 'treasures',
+    operations: [
+        new GetCollection(),
+    ],
+    uriVariables: [
+        'user_id' => new Link(
+            fromProperty: 'dragonTreasures',
+            fromClass: User::class,
+        )
+    ],
+    normalizationContext: [
+        'groups' => [
+            'treasure:read',
+        ],
+    ],
 )]
 #[ApiFilter(BooleanFilter::class, properties: ['isPublished',])]
 #[ApiFilter(PropertyFilter::class)]
@@ -97,8 +116,6 @@ class DragonTreasure
     #[Groups(['treasure:read', 'treasure:write'])]
     #[Assert\Valid]
     private ?User $owner = null;
-
-    #p
 
     public function __construct()
     {
