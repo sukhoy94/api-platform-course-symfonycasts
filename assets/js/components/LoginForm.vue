@@ -39,7 +39,7 @@
                 this.isLoading = true;
                 this.error = '';
 
-                /*
+
                 axios
                     .post('/login', {
                         email: this.email,
@@ -55,8 +55,8 @@
                         console.log(error.response.data);
                     }).finally(() => {
                         this.isLoading = false;
-                    })
-                */
+                    });
+
             },
         },
     }
